@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('SOAP - MNB rates')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('soap')}"></nav>
+
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="bi bi-bank"></i> MNB exchange rates (SOAP)</h1>
+            <p class="mb-0 opacity-75">Official HUF rates from the Hungarian National Bank's SOAP web-service.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card p-4 mb-4">
+            <form th:action="@{/soap}" th:object="${priceForm}" method="post" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label" for="currency">Currency</label>
+                    <select id="currency" class="form-select" th:field="*{currency}">
+                        <option th:each="c : ${currencies}" th:value="${c}" th:text="${c}">EUR</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="startDate">Start date</label>
+                    <input id="startDate" type="date" class="form-control" th:field="*{startDate}" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="endDate">End date</label>
+                    <input id="endDate" type="date" class="form-control" th:field="*{endDate}" required>
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Get rates</button>
+                </div>
+            </form>
+        </div>
+
+        <div th:if="${error}" class="alert alert-warning" th:text="${error}">error</div>
+
+        <div th:if="${points != null and !points.isEmpty()}" class="row g-4">
+            <div class="col-lg-8">
+                <div class="card p-4 h-100">
+                    <h5 th:text="${priceForm.currency} + ' / HUF  (' + ${priceForm.startDate} + ' - ' + ${priceForm.endDate} + ')'">EUR/HUF</h5>
+                    <canvas id="rateChart" height="140"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card p-4 h-100">
+                    <h5>Data (<span th:text="${points.size()}">0</span> days)</h5>
+                    <div class="table-wrap">
+                        <table class="table table-sm table-striped mb-0">
+                            <thead><tr><th>Date</th><th class="text-end">Rate (HUF)</th><th class="text-end">Unit</th></tr></thead>
+                            <tbody>
+                            <tr th:each="p : ${points}">
+                                <td th:text="${p.date()}">2026-01-01</td>
+                                <td class="text-end" th:text="${#numbers.formatDecimal(p.rate(), 1, 2, 'POINT')}">0</td>
+                                <td class="text-end" th:text="${p.unit()}">1</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <details>
+                    <summary class="text-muted">Raw XML answer of the web-service</summary>
+                    <pre class="raw" th:text="${rawXml}"></pre>
+                </details>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script th:if="${points != null and !points.isEmpty()}" th:inline="javascript">
+    const labels = /*[[${labels}]]*/ [];
+    const values = /*[[${values}]]*/ [];
+    const currency = /*[[${priceForm.currency}]]*/ 'EUR';
+    new Chart(document.getElementById('rateChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: currency + ' / HUF',
+                data: values,
+                borderColor: '#18bc9c',
+                backgroundColor: 'rgba(24,188,156,0.15)',
+                fill: true,
+                tension: 0.25,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: true } },
+            scales: { y: { title: { display: true, text: 'HUF' } } }
+        }
+    });
+</script>
+</body>
+</html>
