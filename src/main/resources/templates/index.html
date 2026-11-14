@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Mainpage')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('home')}"></nav>
+
+<main>
+    <section class="hero">
+        <div class="container position-relative" style="z-index:1">
+            <span class="badge bg-light text-primary mb-3">Since 2026 &middot; Kecskemét</span>
+            <h1>Smarter currency decisions,<br>in real time.</h1>
+            <p class="lead my-4">
+                FX Horizon is a fintech start-up that brings official central-bank exchange rates and live
+                forex market data together in one simple dashboard &ndash; from historical analysis to opening
+                and closing positions.
+            </p>
+            <a class="btn btn-light btn-lg me-2" th:href="@{/soap}"><i class="bi bi-bank"></i> MNB rates</a>
+            <a class="btn btn-outline-light btn-lg" th:href="@{/forex/actprice}"><i class="bi bi-lightning"></i> Live prices</a>
+        </div>
+    </section>
+
+    <section class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">What we offer</h2>
+            <p class="text-muted">Two data sources, one platform.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100 p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-bank"></i></div>
+                    <h5>Central bank rates</h5>
+                    <p class="text-muted mb-0">Official daily rates of the Hungarian National Bank via its SOAP web-service, with interactive charts.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100 p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-lightning-charge"></i></div>
+                    <h5>Live market prices</h5>
+                    <p class="text-muted mb-0">Current bid/ask prices of major currency pairs through the Oanda v20 REST API.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100 p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-clock-history"></i></div>
+                    <h5>Historical candles</h5>
+                    <p class="text-muted mb-0">The last 10 candles for any instrument from 1 minute up to 1 month granularity.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100 p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-arrow-left-right"></i></div>
+                    <h5>Trading</h5>
+                    <p class="text-muted mb-0">Open long or short positions at market price, list them, and close them with one click.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-5">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-6 col-md-3"><div class="stat">40+</div><div class="text-muted">MNB currencies</div></div>
+                <div class="col-6 col-md-3"><div class="stat">24/5</div><div class="text-muted">Forex market hours</div></div>
+                <div class="col-6 col-md-3"><div class="stat">8</div><div class="text-muted">Granularities</div></div>
+                <div class="col-6 col-md-3"><div class="stat">100%</div><div class="text-muted">Java &amp; Spring Boot</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="fw-bold">About the company</h2>
+                <p>
+                    FX Horizon was founded by two engineering students who wanted to understand how currency markets
+                    really move. Our platform is built on Java 25 and Spring Boot and talks to two very different
+                    services: a classic SOAP web-service of the central bank and a modern REST trading API.
+                </p>
+                <p class="text-muted mb-0">
+                    This demo runs on a practice (demo) trading account &ndash; no real money is ever used.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class="card p-4">
+                    <h5 class="mb-3"><i class="bi bi-compass"></i> Quick start</h5>
+                    <ol class="mb-0">
+                        <li>Check the <a th:href="@{/soap}">official MNB rates</a> for a period.</li>
+                        <li>Compare them with the <a th:href="@{/forex/actprice}">live market price</a>.</li>
+                        <li>Look at the <a th:href="@{/forex/histprice}">last 10 candles</a>.</li>
+                        <li><a th:href="@{/forex/open}">Open</a> a position and <a th:href="@{/forex/positions}">follow it</a>.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>
