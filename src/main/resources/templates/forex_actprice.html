@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Forex-ActPrice')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('forex')}"></nav>
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="bi bi-lightning"></i> Forex-ActPrice</h1>
+            <p class="mb-0 opacity-75">Select an instrument to see its current price.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card p-4 mb-4">
+            <form th:action="@{/forex/actprice}" th:object="${actForm}" method="post" class="row g-3 align-items-end">
+                <div class="col-md-8">
+                    <label class="form-label" for="instrument">Instrument</label>
+                    <select id="instrument" class="form-select" th:field="*{instrument}">
+                        <option th:each="i : ${instruments}" th:value="${i}" th:text="${i}">EUR_USD</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i> Get actual price</button>
+                </div>
+            </form>
+        </div>
+
+        <div th:if="${instr}" class="row g-4">
+            <div class="col-md-6">
+                <div class="card p-4 text-center">
+                    <div class="text-muted">BID (sell)</div>
+                    <div class="price-big text-danger" th:text="${bid}">0</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4 text-center">
+                    <div class="text-muted">ASK (buy)</div>
+                    <div class="price-big text-success" th:text="${ask}">0</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card p-3 d-flex flex-row flex-wrap gap-4">
+                    <span>Instrument: <strong th:text="${instr}"></strong></span>
+                    <span>Time: <strong th:text="${time}"></strong></span>
+                    <span>Tradeable: <strong th:text="${tradeable}"></strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>

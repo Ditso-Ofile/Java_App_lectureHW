@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Forex-Open')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('forex')}"></nav>
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="bi bi-box-arrow-in-right"></i> Forex-Open</h1>
+            <p class="mb-0 opacity-75">Open a position at market price. Positive units = Long, negative units = Short.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card p-4 mb-4">
+            <form th:action="@{/forex/open}" th:object="${openForm}" method="post" class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label" for="instrument">Instrument</label>
+                    <select id="instrument" class="form-select" th:field="*{instrument}">
+                        <option th:each="i : ${instruments}" th:value="${i}" th:text="${i}">EUR_USD</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="units">Quantity (units)</label>
+                    <input id="units" type="number" class="form-control" min="-1000" max="1000" step="1" th:field="*{units}" required>
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Open position</button>
+                </div>
+            </form>
+        </div>
+
+        <div th:if="${error}" class="alert alert-warning" th:text="${error}"></div>
+
+        <div th:if="${tradeId}" class="alert alert-success">
+            <h4 class="alert-heading"><i class="bi bi-check-circle"></i> Position opened</h4>
+            <p class="mb-1">Instrument: <strong th:text="${instr}"></strong></p>
+            <p class="mb-1">Units: <strong th:text="${units}"></strong> &ndash; <span th:text="${direction}"></span></p>
+            <p class="mb-1">Fill price: <strong th:text="${price}"></strong></p>
+            <p class="mb-0">Trade ID: <strong th:text="${tradeId}"></strong>
+                &ndash; <a th:href="@{/forex/positions}">see open positions</a></p>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>
