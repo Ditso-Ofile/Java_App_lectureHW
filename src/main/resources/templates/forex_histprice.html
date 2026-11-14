@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Forex-HistPrice')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('forex')}"></nav>
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="bi bi-clock-history"></i> Forex-HistPrice</h1>
+            <p class="mb-0 opacity-75">The last 10 historical prices (candles) of an instrument.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card p-4 mb-4">
+            <form th:action="@{/forex/histprice}" th:object="${histForm}" method="post" class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label" for="instrument">Instrument</label>
+                    <select id="instrument" class="form-select" th:field="*{instrument}">
+                        <option th:each="i : ${instruments}" th:value="${i}" th:text="${i}">EUR_USD</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="granularity">Granularity</label>
+                    <select id="granularity" class="form-select" th:field="*{granularity}">
+                        <option th:each="g : ${granularities}" th:value="${g}"
+                                th:text="${g} + ${g == 'M1' ? ' (1 minute)' : g == 'M5' ? ' (5 minutes)' : g == 'M15' ? ' (15 minutes)' : g == 'H1' ? ' (1 hour)' : g == 'H4' ? ' (4 hours)' : g == 'D' ? ' (1 day)' : g == 'W' ? ' (1 week)' : ' (1 month)'}">D</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Get prices</button>
+                </div>
+            </form>
+        </div>
+
+        <div th:if="${candles}" class="row g-4">
+            <div class="col-lg-7">
+                <div class="card p-4 h-100">
+                    <h5 th:text="${instr} + ' - ' + ${granularity} + ' - close prices'">chart</h5>
+                    <canvas id="histChart" height="160"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card p-4 h-100">
+                    <table class="table table-sm table-striped mb-0">
+                        <thead><tr><th>Time</th><th>Open</th><th>High</th><th>Low</th><th>Close</th></tr></thead>
+                        <tbody>
+                        <tr th:each="c : ${candles}">
+                            <td class="small" th:text="${c.time}"></td>
+                            <td th:text="${c.open}"></td>
+                            <td th:text="${c.high}"></td>
+                            <td th:text="${c.low}"></td>
+                            <td class="fw-bold" th:text="${c.close}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script th:if="${candles}" th:inline="javascript">
+    new Chart(document.getElementById('histChart'), {
+        type: 'line',
+        data: {
+            labels: /*[[${labels}]]*/ [],
+            datasets: [{
+                label: /*[[${instr}]]*/ 'EUR_USD',
+                data: /*[[${closes}]]*/ [],
+                borderColor: '#2c3e50',
+                backgroundColor: 'rgba(44,62,80,0.1)',
+                fill: true,
+                tension: 0.2
+            }]
+        },
+        options: { responsive: true }
+    });
+</script>
+</body>
+</html>
