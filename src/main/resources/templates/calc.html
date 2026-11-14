@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Test - Calculator')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('test')}"></nav>
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="bi bi-calculator"></i> Test &ndash; Calculator</h1>
+            <p class="mb-0 opacity-75">Four-operation calculator covered by JUnit and MockMvc tests.</p>
+        </div>
+    </div>
+    <div class="container" style="max-width: 720px">
+        <div th:if="${result != null}" class="alert alert-success">
+            <strong>Result:</strong>
+            <span th:text="${calcForm.a}"></span> <span th:text="${symbol}"></span>
+            <span th:text="${calcForm.b}"></span> = <b th:text="${result}">0</b>
+        </div>
+        <div th:if="${error != null}" class="alert alert-danger">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <div class="card p-4">
+            <form th:action="@{/calc}" th:object="${calcForm}" method="post" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" for="a">A number</label>
+                    <input id="a" type="number" class="form-control" th:field="*{a}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="op">Operation</label>
+                    <select id="op" class="form-select" th:field="*{op}">
+                        <option value="add">Addition (+)</option>
+                        <option value="sub">Subtraction (-)</option>
+                        <option value="mul">Multiplication (*)</option>
+                        <option value="divide">Division (/)</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="b">B number</label>
+                    <input id="b" type="number" class="form-control" th:field="*{b}" required>
+                </div>
+                <div class="col-12 d-grid">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>
