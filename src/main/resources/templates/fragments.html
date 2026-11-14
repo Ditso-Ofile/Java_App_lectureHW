@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  Shared page parts (Thymeleaf fragments) used by every page:
+  head, navbar (menu), footer (creators' Mogajane Ditso Ofile + HH0DUU), scripts.
+  Theme: Bootswatch "Flatly" (free, responsive, MIT licence) - https://bootswatch.com/flatly/
+-->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' | FX Horizon'">FX Horizon</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav th:fragment="navbar(active)" class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}"><i class="bi bi-graph-up-arrow"></i> FX Horizon</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:classappend="${active == 'home'} ? 'active'" th:href="@{/}">Mainpage</a></li>
+                <li class="nav-item"><a class="nav-link" th:classappend="${active == 'soap'} ? 'active'" th:href="@{/soap}">SOAP</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" th:classappend="${active == 'forex'} ? 'active'" href="#"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">Forex</a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/forex/account}"><i class="bi bi-person-badge"></i> Forex-Account</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/actprice}"><i class="bi bi-lightning"></i> Forex-ActPrice</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/histprice}"><i class="bi bi-clock-history"></i> Forex-HistPrice</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/open}"><i class="bi bi-box-arrow-in-right"></i> Forex-Open</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/positions}"><i class="bi bi-list-ul"></i> Forex-Pos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/close}"><i class="bi bi-x-circle"></i> Forex-Close</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" th:classappend="${active == 'test'} ? 'active'" th:href="@{/calc}">Test</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/react/}">React</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="footer bg-dark text-light py-4 mt-5">
+    <div class="container d-md-flex justify-content-between align-items-center text-center text-md-start">
+        <div>
+            <strong>FX Horizon</strong> &middot; Java applications &ndash; Lecture homework
+        </div>
+        <div class="small mt-2 mt-md-0">
+
+            Created by: <span class="fw-semibold">Mogajane Ditso Ofile</span> (HHODUU)
+            &amp; <span class="fw-semibold">Ditso Ofile</span> (hhoduu)
+        </div>
+    </div>
+</footer>
+
+<th:block th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</th:block>
+
+</body>
+</html>
