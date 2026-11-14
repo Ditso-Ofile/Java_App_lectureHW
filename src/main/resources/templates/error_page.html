@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Error')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar('')}"></nav>
+<main>
+    <div class="container py-5" style="max-width: 760px">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Something went wrong</h4>
+            <p th:text="${errorMessage}">error</p>
+            <hr>
+            <p class="mb-0 small">
+                Typical causes: no internet connection, wrong Oanda token / account ID in application.properties,
+                or the Forex market is closed (weekend) so a position cannot be opened or closed.
+            </p>
+        </div>
+        <a class="btn btn-primary" th:href="@{/}">Back to the Mainpage</a>
+    </div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>
